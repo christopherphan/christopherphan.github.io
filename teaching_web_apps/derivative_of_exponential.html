@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" > 
+<head profile="http://www.w3.org/2005/10/profile"> 
+<link href="cphanm.css" rel="stylesheet" type="text/css" /> 
+<link rel="stylesheet" type="text/css" href="jsxgraph.css" /> 
+ <script type="text/javascript" src="jsxgraphcore.js"></script> 
+
+<title> 
+Behavior of f(x) = b^x
+</title> 
+</head>
+ 
+<body onload="changetext()"> 
+ 
+<h1 class="title">Behavior of f(x) = b<sup>x</sup></h1> 
+ 
+<div class="main"> 
+
+<p>Let <i>f</i>(<i>x</i>) = <i>b</i><sup><i>x</i></sup>. Then the derivative of <i>f</i> has the property that <i>f</i> '(<i>x</i>) = <i>f</i> '(0) <i>b</i><sup><i>x</i></sup>.</p>
+  
+<p>Below is the plot of <i>f</i>(<i>x</i>) = <span id="bnum">b</span><sup><i>x</i></sup>, its derivative <i>f</i> '(x) = (<span id="slope3">m</span>) <span id="bnum2">b</span><sup><i>x</i></sup>, as well as a tangent line at <i>x</i> = 0. The tangent line has slope <i>m</i> = <span id="slope1">m</span>, as <i>f</i> '(0) = <span id="slope2">m</span>. Move the slider to change the base. What value of <i>b</i> yields <i>f</i> '(0) = 1?</p>
+
+<div id="box" class="jxgbox" style="width:500px; height:500px;"></div> 
+<script type="text/javascript"> 
+ 
+var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-4, 10, 4, -4], axis:true});
+var bslider = board.create('slider', [[-3, -2], [2, -2],[0.1, 2, 5]], {name:'b', snapwidth:0.01});
+var fgraph = board.create('functiongraph', [function(x){return Math.pow(bslider.Value(), x);}],{dash:0});
+var tangpt = board.create('glider', [0, 1, fgraph], {fixed: true, name: ' '}); 
+var tangln = board.create('tangent', [tangpt], {strokeColor:'#990000'});
+var fpgraph = board.create('functiongraph', [function(x){return Math.log(bslider.Value())*Math.pow(bslider.Value(), x);}], {dash:0, strokeColor:'#990099'});
+
+
+ function changetext(){
+	
+	
+    var b = bslider.Value().toFixed(2);
+	var m = Math.log(bslider.Value()).toFixed(2);
+	document.getElementById('bnum').innerHTML = b;
+	document.getElementById('bnum2').innerHTML = b;
+	document.getElementById('slope1').innerHTML = m;
+	document.getElementById('slope2').innerHTML = m;
+	document.getElementById('slope3').innerHTML = m;
+	
+    t=setTimeout('changetext()', 10);
+	
+  }
+ 
+
+ 
+ 
+ </script> 
+ 
+<p>This page uses <a href="http://jsxgraph.uni-bayreuth.de/wp/">JSXGraph</a>.</p> 
+</div>
+
+</body>
+</html>

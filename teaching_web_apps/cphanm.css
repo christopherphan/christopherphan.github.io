@@ -1,0 +1,110 @@
+DIV.main { margin-top: 2em;
+	   margin-bottom: 5em;
+	   margin-left: 4em;
+	   margin-right: 4em;
+	background-color: #FFFFFF;
+	padding: 1em;}
+
+BODY {
+ margin-left: 1em;
+ margin-right: 1em;
+ margin-top: 1em;
+ margin-bottom: 1em;
+ background: url("http://www.chrisphan.com/math/cphanback.png");
+ color: #000000;
+ font-family: Optima, Tahoma, sans-serif;
+}
+
+H1, H2, H3, H4, H5, H6 {
+ color: #006600;
+ margin: 0.5em;
+ font-weight: bold;
+ font-family: Palatino, "Palatino Linotype", "Book Antiqua", serif;
+}
+
+HR{ border-bottom: thin solid #000000; }
+
+H1 {
+  font-size: 200%;
+}
+
+H1.title {
+  font-size: 250%;
+  color: #006600;
+  padding: 10px;
+  background: #FFFFFF; 
+}
+
+H2 {
+  font-size: 175%;
+}
+
+H3 {
+  font-size: 125%;
+}
+
+H4 {
+  font-size: 110%;
+}
+
+H5 {
+  font-size: 105%;
+}
+
+B, STRONG, I, EM, CITE, TT, CODE, IMG, SPAN {
+ display: inline;
+}
+
+LI { display: list-item;
+padding-bottom: .5em;
+ }
+
+B, STRONG{ font-weight: bold; }
+
+I, EM, CITE { font-style: italic; }
+
+TT, CODE { font-family: "Lucida Console", "Andale Mono", courier, monospace; font-size: 85%;}
+
+BLOCKQUOTE { 
+ padding: .25em;
+ margin-left: 2em;
+ color: #000000;
+ background-color: #CCCCCC;
+}
+
+A:link { color: #663399;}
+A:visited{ color: #6600CC;}
+A:active{ color: #FF0000;}
+
+A:link IMG { border: none; }
+A:visited IMG { border: none; }
+A:active IMG{ border: none; }
+
+ADDRESS { color: #000000;
+ border: thin solid #333333;
+ padding: .125em; 
+}
+
+DIV.subboxrt{
+float: right; 
+padding: 1em; 
+background-color: #FFFFFF;
+margin: 1em;
+}
+
+DIV.subbox{
+ padding: 1em; 
+background-color: #FFFFFF;
+margin: 1em;
+}
+
+TD{
+border: none;
+}
+
+SPAN.smallcaps{
+font-variant: small-caps;
+}
+
+
+

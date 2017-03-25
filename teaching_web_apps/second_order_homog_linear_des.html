@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head profile="http://www.w3.org/2005/10/profile">
+<title>
+Second-order linear homogeneous differential equations with constant coefficients.
+</title>
+<link href="cphanm.css" rel="stylesheet" type="text/css" />
+ 
+<link rel="stylesheet" type="text/css" href="jsxgraph.css" />
+ <script type="text/javascript" src="jsxgraphcore.js"></script>
+</head>
+
+<body onload="desolutiontext();">
+
+<h1 class="title">Second-order linear homogeneous differential equations with constant coefficients</h1>
+
+<div class="main">
+
+<p>Let</p><center id="equation">a.</center>
+<p>The solution to this IVP is</p><center id="solution">a.</center>
+
+<p>Move the sliders to change the coefficients and <i>y</i>'(0). Move the point on the <i>y</i>-axis to change <i>y(0)</i>.</p>
+
+<div id="box" class="jxgbox" style="width:600px; height:400px;"></div>
+<script type="text/javascript">
+
+  var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-0.5, 15, 10, -15], axis:true});
+  var bslider = board.create('slider', [[1, -12], [6, -12],[-5,0.1, 5]], {name:'b',snapwidth:0.1});
+  var cslider = board.create('slider', [[1, -13], [6, -13],[-5,2.5, 5]], {name:'c',snapwidth:0.1});
+  var dslider = board.create('slider', [[1, -14], [6, -14],[-20,0, 20]], {name:"y'(0)",snapwidth:0.1});
+  var yaxis = board.create('segment', [[0, -10], [0, 10]],{visible: false});
+  var initcond = board.create('glider', [0,7, yaxis], {name: 'drag me!'});
+
+ function desolutiontext(){
+	var a = 1.0;
+	var b = bslider.Value();
+	var c = cslider.Value();
+	var d = dslider.Value();
+	var t = initcond.Y();
+	if (b*b > 4*a*c) {
+		var r = (-b + Math.sqrt(b*b - 4*a*c))/(2*a);
+		var s = (-b - Math.sqrt(b*b - 4*a*c))/(2*a);
+		var alpha = (d-s*t)/(r - s);
+		var beta = t - alpha;
+		var sign;
+		if (beta < 0) { sign = ' - '} else {sign = ' + ' }
+		document.getElementById('solution').innerHTML = '<i>y</i> = ' + alpha.toFixed(3) + '<i>e</i><sup>' + r.toFixed(5) + '<i>t</i></sup>' + sign + Math.abs(beta).toFixed(3) + '<i>e</i><sup>' + s.toFixed(5) + '<i>t</i></sup>';
+	} else if (b*b == 4*a*c) {
+		var r = -b/(2*a);
+		var alpha = t
+		var beta = -alpha*r + d;
+		if (beta < 0) { sign = ' - '} else {sign = ' + ' }
+		document.getElementById('solution').innerHTML = '<i>y</i> = ' + alpha.toFixed(3) + '<i>e</i><sup>' + r.toFixed(5) + '<i>t</i></sup>' + sign + Math.abs(beta).toFixed(3) + '<i>t</i> <i>e</i><sup>' + r.toFixed(5) + '<i>t</i></sup>';
+	} else {
+		mu = Math.sqrt(4*a*c - b*b)/(2*a);
+		var lambda = -b/(2*a);
+		var alpha = t;
+		var beta = (d-alpha*lambda)/mu;
+		if (beta < 0) { sign = ' - '} else {sign = ' + ' }
+		document.getElementById('solution').innerHTML = '<i>y</i> = ' + alpha.toFixed(3) + '<i>e</i><sup>'+ lambda.toFixed(2) + '<i>t</i></sup> cos(' + mu.toFixed(3) + '<i>t</i>)' + sign +  Math.abs(beta).toFixed(3) + '<i>e</i><sup>'+ lambda.toFixed(2) + '<i>t</i></sup> sin(' + mu.toFixed(3) + '<i>t</i>)';
+	}
+	var bsign;
+	var csign;
+	if (b < 0) {bsign = ' - '} else {bsign = ' + '}
+	if (c < 0) {csign = ' - '} else {csign = ' + '}
+	document.getElementById('equation').innerHTML = "<i>y</i>'' " + bsign + Math.abs(b).toFixed(1) + "<i>y</i>'" + csign + Math.abs(c).toFixed(1) +  "<i>y</i> = 0, <i>y</i>(0) = " + t.toFixed(2) + ", <i>y</i>'(0) = " + d.toFixed(1) + ".";
+
+    t=setTimeout('desolutiontext()', 10);
+	
+  }
+ 
+ function desolution(x, b, c, t, d){
+	 var a = 1.0;
+	if (b*b > 4*a*c) {
+		var r = (-b + Math.sqrt(b*b - 4*a*c))/(2*a);
+		var s = (-b - Math.sqrt(b*b - 4*a*c))/(2*a);
+		var alpha = (d-s*t)/(r - s);
+		var beta = t - alpha;
+		return alpha*Math.exp(r*x) + beta*Math.exp(s*x);
+	} else if (b*b == 4*a*c) {
+		var r = -b/(2*a);
+		var alpha = t;
+		var beta = -alpha*r + d;
+		return alpha*Math.exp(r*x) + beta*x*Math.exp(r*x);
+	} else {
+		var mu = Math.sqrt(4*a*c - b*b)/(2*a);
+		var lambda = -b/(2*a);
+		var alpha = t;
+		var beta = (d-alpha*lambda)/mu;
+		return alpha*Math.exp(lambda*x)*Math.cos(mu*x) + beta*Math.exp(lambda*x)*Math.sin(mu*x);
+	}
+ 
+ }
+ 
+
+ board.create('functiongraph', [function(x){return desolution(x, bslider.Value(), cslider.Value(), initcond.Y(), dslider.Value());}],{dash:0});
+</script>
+
+<p>This page uses <a href="http://jsxgraph.uni-bayreuth.de/wp/">JSXGraph</a>.</p>
+</body>
+</html>

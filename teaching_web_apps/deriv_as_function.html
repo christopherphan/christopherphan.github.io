@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" > 
+<head profile="http://www.w3.org/2005/10/profile"> 
+<link href="cphanm.css" rel="stylesheet" type="text/css" /> 
+<link rel="stylesheet" type="text/css" href="jsxgraph.css" /> 
+ <script type="text/javascript" src="jsxgraphcore.js"></script> 
+
+<title> 
+The derivative as a function
+</title> 
+</head>
+ 
+<body onload="changetext()"> 
+ 
+<h1 class="title">The derivative as a function</h1> 
+ 
+<div class="main"> 
+
+<p>Let <i>f</i>(<i>x</i>) = <i>x</i><sup>3</sup> - 4<i>x</i> + 5. Then</p>
+<center><i>f</i> '(<span id="tanloc2">[text]</span>) = <span id="numderiv">[text]</span>.</center>
+  
+<p>Below is the plot of <i>f</i>, its derivative <i>f</i> '(<i>x</i>) = 3<i>x</i><sup>2</sup> - 4, and the tangent line at <i>x</i> = <span id="tanloc">[number]</span>. <strong>Drag the point</strong> on the graph of <i>f</i> to move the tangent line.</p>
+
+<div id="box" class="jxgbox" style="width:600px; height:300px;"></div> 
+<script type="text/javascript"> 
+ 
+var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-3, 25, 3, -11], axis:true});
+var fgraph = board.create('functiongraph', [function(x){return x*x*x - 4*x + 5;}],{dash:0});
+var fpgraph = board.create('functiongraph', [function(x){return 3*x*x - 4;}], {dash:0, strokeColor:'#005500'});
+var tangpt = board.create('glider', [0, 5, fgraph], {name:'Drag me!'}); 
+var tangln = board.create('tangent', [tangpt], {strokeColor:'#990000'});
+var ptonfp = board.create('point', [function(){return tangpt.X();}, function(){return 3*tangpt.X()*tangpt.X() - 4;}], {name: ' '});
+ 
+ function changetext(){
+	
+	
+    var tangx = tangpt.X().toFixed(2);
+	document.getElementById('tanloc').innerHTML = tangx;
+	document.getElementById('tanloc2').innerHTML = tangx;
+	document.getElementById('numderiv').innerHTML = (3*tangpt.X()*tangpt.X() - 4).toFixed(2);
+	
+    t=setTimeout('changetext()', 10);
+	
+  }
+ 
+
+ 
+ 
+ </script> 
+ 
+<p>This page uses <a href="http://jsxgraph.uni-bayreuth.de/wp/">JSXGraph</a>.</p> 
+</div>
+
+</body>
+</html>

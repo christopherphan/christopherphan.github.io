@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head profile="http://www.w3.org/2005/10/profile">
+<link href="cphanm.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="jsxgraph.css" />
+ <script type="text/javascript" src="jsxgraphcore.js"></script>
+
+<title>
+Implicit differentiation
+</title>
+</head>
+
+<body onload=" changetext();">
+
+<h1 class="title">Implicit differentiation</h1>
+
+<p id="jsturnon"><strong>Javascript must be enabled for this page to work.</strong></p>
+
+<div class="main">
+
+<p>Below we have a plot of the Folium of Descartes, the curve defined by</p>
+<center><i>x</i><sup>3</sup> + <i>y</i><sup>3</sup> = 3<i>xy</i></center>
+
+<p>By implicit differentation, we found that</p>
+<center><i>dy</i>/<i>dx</i> = (<i>y</i> - <i>x</i><sup>2</sup>)/(<i>y</i><sup>2</sup> - <i>x</i>).</center>
+
+<p>Consider the point (<span id="ptxcoord">x</span>, <span id="ptycoord">y</span>), which is on the Folium. <span id="derivative"></span></p>
+
+<p>Below, we have a plot of the Folium, the point we've considered, and the tangent line. You can move the point anywhere on the loop by dragging it below.</p>
+
+
+<div id="box" class="jxgbox" style="width:400px; height:400px;"></div>
+<script type="text/javascript">
+
+ function changetext(){
+	/* Don't let users change the bounding box! */
+	board.setBoundingBox([-2, 2, 2, -2]);
+	document.getElementById('jsturnon').innerHTML = '';
+
+	var x = tangpt.X();
+	var y = tangpt.Y();
+	var deriv = 0
+
+	if (Math.pow(y,2) == x){
+		document.getElementById('derivative').innerHTML = '';
+	} else {
+		deriv = (y - Math.pow(x, 2))/(Math.pow(y, 2) - x);
+		document.getElementById('derivative').innerHTML = 'The derivative is then <i>dy</i>/<i>dx</i>|<sub>P</sub> = ' + deriv.toFixed(2);
+	}
+
+	document.getElementById('ptxcoord').innerHTML = x.toFixed(2);
+	document.getElementById('ptycoord').innerHTML = y.toFixed(2);
+
+	t=setTimeout('changetext()', 10);
+
+
+
+  }
+
+
+	var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-2, 2, 2, -2], axis:true});
+	var follium = board.create('curve', [function(p){return 3*p/(1 + Math.pow(p, 3));}, function(p){return 3*Math.pow(p,2)/(1 + Math.pow(p, 3));}, 0, 50]);
+	var foll2 = board.create('curve', [function(p){return 3*p/(1 + Math.pow(p, 3));}, function(p){return 3*Math.pow(p,2)/(1 + Math.pow(p, 3));}, -100, -1]);
+	var foll3 = board.create('curve', [function(p){return 3*p/(1 + Math.pow(p, 3));}, function(p){return 3*Math.pow(p,2)/(1 + Math.pow(p, 3));}, -1, 0]);
+	var tangpt = board.create('glider', [2/3, 4/3, follium], {name:'Drag me!'});
+	var tangln = board.create('tangent', [tangpt], {strokeColor:'#990000'});
+
+
+
+
+
+
+ </script>
+
+<p>This page uses <a href="http://jsxgraph.uni-bayreuth.de/wp/">JSXGraph</a>.</p>
+</div>
+
+</body>
+</html>

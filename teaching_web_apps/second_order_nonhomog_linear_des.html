@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head profile="http://www.w3.org/2005/10/profile">
+<title>
+Forced vibration
+</title>
+<link href="cphanm.css" rel="stylesheet" type="text/css" />
+
+
+ 
+<link rel="stylesheet" type="text/css" href="jsxgraph.css" />
+ <script type="text/javascript" src="jsxgraphcore.js"></script>
+</head>
+
+<body onload="desolutiontext(); omegachange();">
+
+<h1 class="title">Forced vibration</h1>
+
+<div class="main">
+
+<h2>Forced vibration with dampening</h2>
+
+<p id="jsturnon"><strong>If you can read this, you need to turn on Javascript.</strong></p>
+
+<p>Consider the differential equation <center><i>y</i>'' + 0.125 <i>y</i>' + <i>y</i> = 3 cos(&omega; <i>t</i>), <i>y</i>(0) = 2, <i>y</i>'(0) = 0, where &omega; = <span id="omegavalue3">[omega]</span>.</center>
+
+<p>The solution is </p>
+<center><i>y</i> =  <span id="Rtrans">[some number]</span><i>e</i><sup>-<i>t</i>/16</sup> cos(<img src="sqrt255.png" alt="sqrt(255)" align="bottom"/> <i>t</i> / 16  <span id="deltatrans"> - [delta]</span> ) + <span id="Rsteady">[some number]</span> cos(<span id="omegavalue2">[omega]</span> t <span id="deltasteady"> - [delta]</span>).</center>
+
+<p>Move the slider to change the value of &omega;. The current value is &omega; = <span id="omegavalue">2</span>.</p>
+
+
+<div id="box" class="jxgbox" style="width:600px; height:400px;"></div>
+<script type="text/javascript">
+
+  var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-0.5, 25, 50, -25], axis:true});
+  var omegaslider = board.create('slider', [[2, -20], [40, -20],[0.5, 0.75, 1.5]], {name:'omega',snapwidth:0.01});
+
+ function desolutiontext(){
+	var omega = omegaslider.Value();
+	
+	document.getElementById('omegavalue').innerHTML = omega.toFixed(2);
+	document.getElementById('omegavalue2').innerHTML = omega.toFixed(2);
+	document.getElementById('omegavalue3').innerHTML = omega.toFixed(2);
+	document.getElementById('jsturnon').innerHTML = '';
+
+	var atrans = 2*(64*Math.pow(omega, 4) - 223*Math.pow(omega, 2) - 32)/(64*Math.sqrt(255)*Math.pow(omega, 4) - 127*Math.sqrt(255)*Math.pow(omega, 2) + 64*Math.sqrt(255));
+	var btrans = 2*(64*Math.pow(omega, 4) - 31*Math.pow(omega, 2) - 32)/(64*Math.pow(omega,4) - 127*Math.pow(omega, 2) + 64);
+	var Rtrans = Math.sqrt(Math.pow(atrans,2) + Math.pow(btrans, 2));
+	
+	document.getElementById('Rtrans').innerHTML = Rtrans.toFixed(5);
+	
+	var deltatrans = Math.asin(atrans/Rtrans);
+	if (btrans < 0){
+		deltatrans = Math.PI - deltatrans;
+	}
+	
+	var deltasign = " - ";
+	if(deltatrans < 0){
+		deltasign = " + ";
+	}
+	
+	document.getElementById('deltatrans').innerHTML = deltasign + Math.abs(deltatrans).toFixed(5);
+	
+	var asteady = 24*omega/(64*Math.pow(omega,4) - 127*Math.pow(omega, 2) + 64);
+	var bsteady = -192*(Math.pow(omega, 2) - 1)/(64*Math.pow(omega,4) - 127*Math.pow(omega, 2) + 64);
+	var Rsteady = Math.sqrt(Math.pow(asteady, 2) + Math.pow(bsteady, 2));
+	
+	document.getElementById('Rsteady').innerHTML = Rsteady.toFixed(5);
+	
+	var deltasteady = Math.asin(asteady/Rsteady);
+	if (bsteady < 0){
+		deltasteady = Math.PI - deltasteady;
+	}
+	
+	var deltasignsteady = " - ";
+	if(deltasteady < 0){
+		deltasignsteady = " + ";
+	}
+	
+	document.getElementById('deltasteady').innerHTML = deltasignsteady + Math.abs(deltasteady).toFixed(5);
+	
+	/* I don't want the user to change the viewing window: */
+	board.setBoundingBox([-0.5, 25, 50, -25]);
+	
+	
+    t=setTimeout('desolutiontext()', 10);
+	
+  }
+ 
+
+function desolutiontrans(x,omega){
+	var atrans = 2*(64*Math.pow(omega, 4) - 223*Math.pow(omega, 2) - 32)/(64*Math.sqrt(255)*Math.pow(omega, 4) - 127*Math.sqrt(255)*Math.pow(omega, 2) + 64*Math.sqrt(255));
+	var btrans = 2*(64*Math.pow(omega, 4) - 31*Math.pow(omega, 2) - 32)/(64*Math.pow(omega,4) - 127*Math.pow(omega, 2) + 64);
+	var Rtrans = Math.sqrt(Math.pow(atrans,2) + Math.pow(btrans, 2));
+	var deltatrans = Math.asin(atrans/Rtrans);
+	if (btrans < 0){
+		deltatrans = Math.PI - deltatrans;
+	}
+	
+	
+	return Rtrans*Math.exp(-x/16)*Math.cos(x*Math.sqrt(255)/16 - deltatrans);
+	
+ }
+ 
+ function desolutionsteady(x, omega){
+	var asteady = 24*omega/(64*Math.pow(omega,4) - 127*Math.pow(omega, 2) + 64);
+	var bsteady = -192*(Math.pow(omega, 2) - 1)/(64*Math.pow(omega,4) - 127*Math.pow(omega, 2) + 64);
+	var Rsteady = Math.sqrt(Math.pow(asteady, 2) + Math.pow(bsteady, 2));
+	var deltasteady = Math.asin(asteady/Rsteady);
+	if (bsteady < 0){
+		deltasteady = Math.PI - deltasteady;
+	}
+	
+	return Rsteady*Math.cos(omega*x - deltasteady);
+ }
+ 
+ board.create('functiongraph', [function(x){return desolutiontrans(x, omegaslider.Value()) + desolutionsteady(x, omegaslider.Value());}],{dash:0, strokeColor: '#000099'});
+
+</script>
+
+</div>
+
+<div class="main">
+
+<h2>Forced vibration without dampening</h2>
+
+<p>Consider the differential equation <center><i>y</i>'' + <i>y</i> = cos(&omega; t), <i>y</i>(0) = 0, <i>y</i>'(0) = 0, where &omega; = <span id="omegavalue4">[omega].</center>
+
+<p>The solution is </p>
+<center><img src="oscillation_equation.png" alt="y = ((2/(1 - omega^2)) sin((((1- omega)t)/2)) sin(((1 + omega)t)/2)" /></center>
+
+<p>Move the slider to change the value of &omega;. The current value is &omega; = <span id="omegavalue5">2</span>.</p>
+
+
+<div id="box2" class="jxgbox" style="width:600px; height:400px;"></div>
+<script type="text/javascript">
+
+  var board2 = JXG.JSXGraph.initBoard('box2', {boundingbox: [-0.5, 25, 400, -25], axis:true});
+  var omegaslider2 = board2.create('slider', [[25, -20], [300, -20],[0.7, 0.85, 0.95]], {name:'omega',snapwidth:0.01});
+
+
+function omegachange(){
+	var omega = omegaslider2.Value();
+	
+	document.getElementById('omegavalue4').innerHTML = omega.toFixed(2);
+	document.getElementById('omegavalue5').innerHTML = omega.toFixed(2);
+	
+
+	/* I don't want the user to change the viewing window: */
+	board2.setBoundingBox([-0.5, 25, 400, -25]);
+
+	t2=setTimeout('omegachange()', 10);
+	
+}
+
+function amplitude(x,omega){
+			
+	return (2/(1-Math.pow(omega,2)))*Math.sin((1 - omega)*x/2);
+	
+ }
+ 
+ function desoln(x, omega){
+	return amplitude(x, omega)*Math.sin((1 + omega)*x/2);
+	
+	
+ }
+ 
+board2.create('functiongraph', [function(x){return -amplitude(x, omegaslider2.Value());}],{dash:1, strokeColor: '#FF9999'});
+
+ board2.create('functiongraph', [function(x){return amplitude(x, omegaslider2.Value());}],{dash:1, strokeColor: '#FF9999'});
+ 
+ board2.create('functiongraph', [function(x){return desoln(x, omegaslider2.Value());}],{dash:0, strokeColor: '#000099'});
+
+</script>
+
+</div>
+
+</div>
+
+
+<p>This page uses <a href="http://jsxgraph.uni-bayreuth.de/wp/">JSXGraph</a>.</p>
+</body>
+</html>
